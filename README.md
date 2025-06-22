@@ -1,8 +1,25 @@
 # Preloved Corner / 二手角落
 
+[![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
+[![GitHub Stars](https://img.shields.io/github/stars/sarahliuakl/preloved-corner?style=social)](https://github.com/sarahliuakl/preloved-corner)
+
 A full-stack second-hand trading platform built with modern technologies.
 
 一个使用现代技术栈构建的全栈二手交易平台。
+
+## Features / 功能亮点
+
+- User authentication and profiles / 用户认证与个人资料
+- List and search second-hand items / 发布与搜索二手物品
+- Messaging between buyers and sellers / 买卖双方消息交流
+- Order management / 订单管理
+- Responsive UI / 响应式界面
+- Modern developer tooling / 现代开发工具链
+
+## Screenshots / 截图
+
+<!-- Add screenshots here -->
 
 ## Tech Stack / 技术栈
 
@@ -55,7 +72,7 @@ preloved-corner/
 
 1. **Clone the repository / 克隆仓库**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/sarahliuakl/preloved-corner.git
    cd preloved-corner
    ```
 
