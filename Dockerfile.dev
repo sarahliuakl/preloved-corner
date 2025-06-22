@@ -1,0 +1,68 @@
+# Multi-stage Dockerfile for development
+FROM node:18-alpine as frontend-base
+
+# Install pnpm
+RUN npm install -g pnpm
+
+# Set working directory for frontend
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml* ./
+COPY apps/frontend/package.json ./apps/frontend/
+COPY packages/common/package.json ./packages/common/
+
+# Install dependencies
+RUN pnpm install
+
+# Copy frontend source
+COPY apps/frontend ./apps/frontend
+COPY packages/common ./packages/common
+
+# Build common package
+WORKDIR /app/packages/common
+RUN pnpm build
+
+# Switch to frontend
+WORKDIR /app/apps/frontend
+
+# Expose frontend port
+EXPOSE 3000
+
+# Start frontend dev server
+CMD ["pnpm", "dev", "--host", "0.0.0.0"]
+
+# Backend stage
+FROM python:3.11-slim as backend-base
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Poetry
+RUN pip install poetry
+
+# Configure Poetry
+ENV POETRY_NO_INTERACTION=1 \
+    POETRY_VENV_IN_PROJECT=1 \
+    POETRY_CACHE_DIR=/tmp/poetry_cache
+
+# Set working directory for backend
+WORKDIR /app/backend
+
+# Copy Poetry files
+COPY apps/backend/pyproject.toml apps/backend/poetry.lock* ./
+
+# Install dependencies
+RUN poetry install && rm -rf $POETRY_CACHE_DIR
+
+# Copy backend source
+COPY apps/backend ./
+
+# Expose backend port
+EXPOSE 8000
+
+# Start backend dev server
+CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

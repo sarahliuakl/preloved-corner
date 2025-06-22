@@ -1,0 +1,78 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Frontend (Vite)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/frontend",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev"],
+      "port": 9229,
+      "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Debug Backend (FastAPI)",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/backend",
+      "program": "${workspaceFolder}/apps/backend/app/main.py",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/apps/backend"
+      },
+      "args": [],
+      "justMyCode": false
+    },
+    {
+      "name": "Debug Backend (Uvicorn)",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/backend",
+      "module": "uvicorn",
+      "args": [
+        "app.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--reload"
+      ],
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/apps/backend"
+      },
+      "justMyCode": false
+    },
+    {
+      "name": "Test Frontend",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/frontend",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["test"],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Test Backend",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/backend",
+      "module": "pytest",
+      "args": ["-v"],
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/apps/backend"
+      },
+      "justMyCode": false
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Debug Full Stack",
+      "configurations": ["Debug Frontend (Vite)", "Debug Backend (Uvicorn)"],
+      "stopAll": true
+    }
+  ]
+}
